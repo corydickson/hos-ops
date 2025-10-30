@@ -1,11 +1,11 @@
 # [META] Task 3: Update Staging DAO policy
 
-**Environment:** `PRODUCTION`  
+**Environment:** `STAGING`  
 **Created by:** `fastnear-hos.near`
 
 ## Background
 
-Proposal to update DAO policy config into simple 3/6 majority admins for all actions.
+Proposal to update staging DAO policy config into simple 3/6 majority admins for all actions.
 
 ### For reference: DAO proposal creation process
 
