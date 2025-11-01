@@ -102,7 +102,7 @@ near contract call-function as-read-only hos-root.sputnik-dao.near get_proposal 
 - [ ] Verify the proposal kind of `ChangePolicy`
 - [ ] Verify the new policy accounts are correct
 - [ ] Verify the threshold is set to the expected value.
-- [ ] Compare policy to the relevant staging policy change (staging task 4)
+- [ ] Compare policy to the relevant staging policy change (staging task 3)
 
 ## Expected Results (you should double-check values here)
 
