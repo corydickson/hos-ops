@@ -92,7 +92,6 @@ near contract call-function as-transaction $DAO_ACCOUNT add_proposal base64-args
 Use the NEAR CLI to retrieve the proposal:
 
 ```bash
-# STAGING environment
 near contract call-function as-read-only hos-root.sputnik-dao.near get_proposal json-args '{"id": 14}' network-config mainnet now
 ```
 
