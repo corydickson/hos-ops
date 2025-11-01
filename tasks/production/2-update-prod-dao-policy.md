@@ -1,5 +1,3 @@
-# WORK IN PROGRESS. NOT READY BELOW. TO BE DONE.
-
 # [META] Task 2: Update PROD DAO policy
 
 **Environment:** `PRODUCTION`  
@@ -8,6 +6,15 @@
 ## Background
 
 Proposal to update DAO policy config into simple 3/6 majority admins for all actions.
+
+The current policy setup has 2/4 Admin group, which has control over the Approvers/Requestor groups which shouldn't be the case.
+The proposed change simplifies DAO policy into simple Admin group.
+
+Current policy can be viewed using the following command:
+
+```bash
+near contract call-function as-read-only hos-root.sputnik-dao.near get_policy json-args {} network-config mainnet now
+```
 
 ### For reference: DAO proposal creation process
 
@@ -62,25 +69,23 @@ CLI command to create the proposal:
 
 ```bash
 export DAO_ACCOUNT="hos-root.sputnik-dao.near"
+export SIGNER_ACCOUNT_ID="fastnear-hos.near"
 near contract call-function as-transaction $DAO_ACCOUNT add_proposal base64-args $PROPOSAL_ARGS_B64 prepaid-gas '100.0 Tgas' attached-deposit '0.1 NEAR' sign-as $SIGNER_ACCOUNT_ID network-config mainnet 
-# Proposal ID returned: TBD
+# Proposal ID returned: 14
+# TX ID: https://nearblocks.io/txns/7BuJE3SXtFuhCyVdMVpY95sSVkXNK7yZZi3n1ucNC4Vx
 ```
 
 ## Proposal Details
 
-**Proposal ID:** `TBD`
+**Proposal ID:** `14`
 
 **Description:** Title: Update Policy - Only Admin group with 3/6 for each action
 
-**Expected result:** Once executed the proposal change the DAO policy into simple 3/6 multisig.
+**Expected result:** Once executed the proposal change the DAO policy into simple 3/6 multi-sig with 6 accounts listed in the policy.
 
 ## Verification Steps
 
 > **⚠️ ENVIRONMENT CHECK**: This is a `PRODUCTION` task. Verify all contract addresses and proposals match the PRODUCTION environment.
-
-WORK IN PROGRESS. NOT READY BELOW. TO BE DONE.
-
-<!--
 
 ### Step 1: Check the Proposal
 
@@ -88,39 +93,27 @@ Use the NEAR CLI to retrieve the proposal:
 
 ```bash
 # STAGING environment
-near contract call-function as-read-only hos-root.sputnik-dao.near get_proposal json-args '{"id": 13}' network-config mainnet now
+near contract call-function as-read-only hos-root.sputnik-dao.near get_proposal json-args '{"id": 14}' network-config mainnet now
 ```
 
 ### Step 2: Verify Target Contract and Parameters
 
-- [ ] **CRITICAL**: Confirm target contract from the proposal (e.g. `vote.stagingdao.near`) matches STAGING environment
-- [ ] Verify the proposal kind of `UpgradeRemote`
-- [ ] Verify the function being called is `upgrade`
-- [ ] Check all parameters are as specified in the proposal description
-  - [ ] Build release artifacts (wasm) based on commit specified by the release
-  - [ ] Check the voting contract hash from the arguments matches the expected hash
-
-### Step 3: Additional Checks
-
-- [ ] Review the proposer account
-- [ ] Verify the proposal status
-- [ ] Check voting requirements
-- [ ] Confirm no conflicting pending proposals
+- [ ] Confirm target DAO from the proposal (e.g. `hos-root.sputnik-dao.near`) matches PRODUCTION environment
+- [ ] Verify the proposal kind of `ChangePolicy`
+- [ ] Verify the new policy accounts are correct
+- [ ] Verify the threshold is set to the expected value.
+- [ ] Compare policy to the relevant staging policy change (staging task 4)
 
 ## Expected Results (you should double-check values here)
 
 - The DAO account should be `hos-root.sputnik-dao.near`
 - The proposal should be in the `InProgress` status
-- The proposal kind should be `UpgradeRemote`
-- The proposal target account ID should be `vote.stagingdao.near`
-- The method name should be `upgrade`
-- The lockup contract hash should be `FNk94kmPkxdrDV7mTYBEiq1HCozsCY5Faqif9dMt4WHk`
+- The proposal kind should be `ChangePolicy`
+- The accounts IDs in the policy should match the expected 6 accounts from the security council.
 
-## Transaction Links
+## Links
 
-- Store blob transaction: https://nearblocks.io/txns/5iJhctZP72Vdnz3kzxWS6Suh8WH52Pp6z4uA9X6YwGqX
-- Proposal creation transaction: https://nearblocks.io/txns/9Hr1bh8eogkRMybP7brFUR7d2puAxJKk9UgLdgk6xgZd
+- Proposal creation transaction: https://nearblocks.io/txns/7BuJE3SXtFuhCyVdMVpY95sSVkXNK7yZZi3n1ucNC4Vx
+- Relevant staging DAO policy change: https://github.com/houseofstake/hos-ops/blob/dfb434d008bba22410f7699f7ff1961b4e5993d8/tasks/staging/3-update-staging-dao-policy.md
 
 ## Notes
-
--->
