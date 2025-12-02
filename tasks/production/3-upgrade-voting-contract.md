@@ -85,24 +85,17 @@ Use the NEAR CLI to retrieve the proposal:
 near contract call-function as-read-only hos-root.sputnik-dao.near get_proposal json-args '{"id": 16}' network-config mainnet now
 ```
 
-### Step 2: Decode and Verify Arguments
-
-Decode the inner arguments to verify the actual parameters:
-
-```bash
-near contract call-function as-read-only hos-root.sputnik-dao.near get_proposal json-args '{"id": 16}' network-config mainnet now | jq '.kind.FunctionCall.actions[0].args | @base64d | fromjson'
-```
-
-### Step 3: Verify Target Contract
+### Step 2: Verify Target Contract and Parameters
 
 - [ ] **CRITICAL**: Confirm target contract matches PRODUCTION environment
-- [ ] Verify the function being called is correct
+- [ ] Verify the proposal kind is `UpgradeRemote`
+- [ ] Verify the function being called is `upgrade`
 - [ ] Check all parameters are as specified in the proposal description
   - [ ] Build release artifacts (wasm) based on commit specified by the release
   - [ ] Check the voting contract hash from the arguments matches the expected hash
 - [ ] If PRODUCTION, double-check proposal description for any STAGING indicators
 
-### Step 4: Additional Checks
+### Step 3: Additional Checks
 
 - [ ] Review the proposer account
 - [ ] Verify the proposal status
