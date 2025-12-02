@@ -45,31 +45,32 @@ near contract call-function as-transaction $DAO_ACCOUNT store_blob file-args res
 Proposal args:
 
 ```bash
-export PROPOSAL_DESCRIPTION='STAGING: Upgrade voting contract to `1.0.2`'
-export CONTRACT_ID='vote.stagingdao.near'
+export PROPOSAL_DESCRIPTION='PRODUCTION: Upgrade voting contract to `1.0.2`'
+export CONTRACT_ID='vote.dao'
 export PROPOSAL_ARGS='{"proposal": {"description": "'$PROPOSAL_DESCRIPTION'","kind":{"UpgradeRemote":{"receiver_id":"'$CONTRACT_ID'","method_name":"upgrade","hash":"'$CONTRACT_HASH'"}}}}'
 echo $PROPOSAL_ARGS
-# Expected: {"proposal": {"description": "STAGING: Upgrade voting contract to `1.0.2`","kind":{"UpgradeRemote":{"receiver_id":"vote.stagingdao.near","method_name":"upgrade","hash":"FNk94kmPkxdrDV7mTYBEiq1HCozsCY5Faqif9dMt4WHk"}}}}
+# Expected: {"proposal": {"description": "PRODUCTION: Upgrade voting contract to `1.0.2`","kind":{"UpgradeRemote":{"receiver_id":"vote.dao","method_name":"upgrade","hash":"FNk94kmPkxdrDV7mTYBEiq1HCozsCY5Faqif9dMt4WHk"}}}}
 export PROPOSAL_ARGS_B64=$(echo -n $PROPOSAL_ARGS | base64)
 echo $PROPOSAL_ARGS_B64
-# Expected: eyJwcm9wb3NhbCI6IHsiZGVzY3JpcHRpb24iOiAiU1RBR0lORzogVXBncmFkZSB2b3RpbmcgY29udHJhY3QgdG8gYDEuMC4yYCIsImtpbmQiOnsiVXBncmFkZVJlbW90ZSI6eyJyZWNlaXZlcl9pZCI6InZvdGUuc3RhZ2luZ2Rhby5uZWFyIiwibWV0aG9kX25hbWUiOiJ1cGdyYWRlIiwiaGFzaCI6IkZOazk0a21Qa3hkckRWN21UWUJFaXExSENvenNDWTVGYXFpZjlkTXQ0V0hrIn19fX0
+# Expected: eyJwcm9wb3NhbCI6IHsiZGVzY3JpcHRpb24iOiAiUFJPRFVDVElPTjogVXBncmFkZSB2b3RpbmcgY29udHJhY3QgdG8gYDEuMC4yYCIsImtpbmQiOnsiVXBncmFkZVJlbW90ZSI6eyJyZWNlaXZlcl9pZCI6InZvdGUuZGFvIiwibWV0aG9kX25hbWUiOiJ1cGdyYWRlIiwiaGFzaCI6IkZOazk0a21Qa3hkckRWN21UWUJFaXExSENvenNDWTVGYXFpZjlkTXQ0V0hrIn19fX0=
+
 ```
 
 CLI command to create the proposal:
 
 ```bash
 near contract call-function as-transaction $DAO_ACCOUNT add_proposal base64-args $PROPOSAL_ARGS_B64 prepaid-gas '100.0 Tgas' attached-deposit '0.1 NEAR' sign-as $SIGNER_ACCOUNT_ID network-config mainnet 
-# Proposal ID returned: 15
-# TX ID: https://nearblocks.io/txns/8toU3TQK33TJiLC5QqVDjtLJSFgLYScGwwzNLZojKsdW
+# Proposal ID returned: 16
+# TX ID: https://nearblocks.io/txns/AVwFnPPGyyfidj6eAcSrUZGtt4JDEhbmzBZjACYCyyKV
 ```
 
 ## Proposal Details
 
 **Proposal ID:** #16
 
-## Action to be Taken
+**Description:** PRODUCTION: Upgrade voting contract to `1.0.2`
 
-[Describe the specific action that will be executed]
+**Expected result:** Once executed the proposal will call `upgrade` on the `vote.dao` contract with arguments of new contract binary with hash `FNk94kmPkxdrDV7mTYBEiq1HCozsCY5Faqif9dMt4WHk`. If the upgrade is successful, the voting contract will be running version `1.0.2`.
 
 ## Verification Steps
 
@@ -97,6 +98,8 @@ near contract call-function as-read-only hos-root.sputnik-dao.near get_proposal 
 - [ ] **CRITICAL**: Confirm target contract matches PRODUCTION environment
 - [ ] Verify the function being called is correct
 - [ ] Check all parameters are as specified in the proposal description
+  - [ ] Build release artifacts (wasm) based on commit specified by the release
+  - [ ] Check the voting contract hash from the arguments matches the expected hash
 - [ ] If PRODUCTION, double-check proposal description for any STAGING indicators
 
 ### Step 4: Additional Checks
@@ -108,10 +111,20 @@ near contract call-function as-read-only hos-root.sputnik-dao.near get_proposal 
 
 ## Expected Results
 
-[Describe what the verification should show]
+- The DAO account should be `hos-root.sputnik-dao.near`
+- The proposal should be in the `InProgress` status
+- The proposal kind should be `UpgradeRemote`
+- The proposal target account ID should be `vote.dao`
+- The method name should be `upgrade`
+- The lockup contract hash should be `FNk94kmPkxdrDV7mTYBEiq1HCozsCY5Faqif9dMt4WHk`
 
 ## Transaction Links
 
-- Proposal creation transaction: [TBD]
+- Previous task: [Task 2: Update PROD DAO policy](./2-update-prod-dao-policy.md)
+- Store blob transaction: https://nearblocks.io/txns/5iJhctZP72Vdnz3kzxWS6Suh8WH52Pp6z4uA9X6YwGqX
+- Proposal creation transaction: https://nearblocks.io/txns/AVwFnPPGyyfidj6eAcSrUZGtt4JDEhbmzBZjACYCyyKV
 
 ## Notes
+
+This upgrade was already tested in STAGING.
+
