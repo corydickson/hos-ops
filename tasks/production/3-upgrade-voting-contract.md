@@ -101,6 +101,7 @@ near contract call-function as-read-only hos-root.sputnik-dao.near get_proposal 
 - [ ] Verify the proposal status
 - [ ] Check voting requirements
 - [ ] Confirm no conflicting pending proposals
+- [ ] Check STAGING [voting contract hash](https://nearblocks.io/address/vote.stagingdao.near?tab=contract)
 
 ## Expected Results
 
@@ -116,6 +117,7 @@ near contract call-function as-read-only hos-root.sputnik-dao.near get_proposal 
 - Previous task: [Task 2: Update PROD DAO policy](./2-update-prod-dao-policy.md)
 - Store blob transaction: https://nearblocks.io/txns/5iJhctZP72Vdnz3kzxWS6Suh8WH52Pp6z4uA9X6YwGqX
 - Proposal creation transaction: https://nearblocks.io/txns/AVwFnPPGyyfidj6eAcSrUZGtt4JDEhbmzBZjACYCyyKV
+- STAGING upgrade transaction: https://nearblocks.io/txns/3SesykwjYUDRmsBTyMWSyJmzduDfrxY1sETnp9sg6o1Q
 
 ## Notes
 
