@@ -36,7 +36,7 @@ Uploading the contract binary to the DAO using `store_blob`, we'll need to attac
 
 ```bash
 export DAO_ACCOUNT="hos-root.sputnik-dao.near"
-export SIGNER_ACCOUNT_ID="fastnear-hos.near"
+export SIGNER_ACCOUNT_ID="lane.near"
 near contract call-function as-transaction $DAO_ACCOUNT store_blob file-args res/release/voting_contract.wasm prepaid-gas '300.0 Tgas' attached-deposit '2.22 NEAR' sign-as $SIGNER_ACCOUNT_ID network-config mainnet
 # Returned result matches: "FNk94kmPkxdrDV7mTYBEiq1HCozsCY5Faqif9dMt4WHk"
 # TX ID: https://nearblocks.io/txns/5iJhctZP72Vdnz3kzxWS6Suh8WH52Pp6z4uA9X6YwGqX
