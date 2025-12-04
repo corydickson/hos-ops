@@ -1,22 +1,28 @@
-# Task 3: NEAR Rewards Merkle Verification
+# Task 6: NEAR Rewards Merkle Verification
 
 **Environment:** `STAGING`
 **Created by:** voteagora.near
 
 ## Background
 
-This proposal will outline the process for deploying the claims contract as well as the details for publishing the first campaign. 
-Once this proposal has passed Gauntlet will have the ability to publish new campaigns
+This proposal outlines the process for deploying the claims contract as well as instructions for publishing the first rewards campaign. 
+Once this proposal has passed Gauntlet will have the ability to publish new campaigns.
 
 ## Proposal Details
 
-Contract repo: https://github.com/voteagora/near-merkle-claim
+Two new architecture components are introduced:
 
-Claims UI Repo: https://github.com/voteagora/near-claim
+- The [NEAR Merkle Claim Smart Contract](https://github.com/voteagora/near-merkle-claim)
+
+- The [Agora Campaign Admin Application](https://near-claim.vercel.app/).
+
+### Building Smart Contracts
 
 Rebuilding contracts
 
 ```bash
+git clone https://github.com/voteagora/near-merkle-claim
+cd near-merkle-claim
 git checkout c7587d357be507744c1e961d42f6fdc56e8803aa
 cargo near build
 -> reproducible-wasm
@@ -32,7 +38,9 @@ ls -l target/near/near_merkle_claim.wasm
 # Size: 159744
 ```
 
-Deploying contract to account created by the NF with keys revoked i.e. $CLAIMS_ACCOUNT_ID:
+### Deploying Smart Contracts
+
+Below is a script to deploy the claim contract by an account created by the NF with keys revoked i.e. $CLAIMS_ACCOUNT_ID.  $GAUNTLET_ACCOUNT_ID - Is becomes the owner of the claims contract and will control the campaigns.
 
 ```
 export CLAIMS_ACCOUNT_ID=[TBD]
@@ -50,22 +58,11 @@ near contract deploy $CLAIMS_ACCOUNT_ID use-file $TARGET with-init-call new json
 }' prepaid-gas '10.0 Tgas' attached-deposit "$STORAGE_DEPOSIT" network-config mainnet sign-with-keychain send
 ```
 
-## Action to be Taken
+### Operations
 
-Once the contract is deployed Gauntlet will be able to create a campaign. Below you will find instructions for completing the end-to-end claims process:
+Once the contract is deployed Gauntlet will be able to create a campaign using a data pipeline and the [Agora Campaign Admin Application](https://near-claim.vercel.app/).
 
-$GAUNTLET_ACCOUNT_ID - Gauntlet account ID who is the owner of the claims contract.
-
-Both users and memebers of the security council should use the Agora Merkle Tree [software](https://near-claim.vercel.app/) to generate a proof with the 
-trie artifacts provided by Gauntlet. The parameters you see below are just an example and should be populated with real data (TBD).
-
-How to verify:
-
-- User account Id
-- Amount to be claimed
-- Lockup contract
-
-This CSV will be a three column, comma seperated file. With fields: `address,lockup,amount`
+The data format they use will be a three column, comma seperated file, with fields: `address,lockup,amount`
 
 Ex.
 
@@ -74,15 +71,11 @@ address,lockup,amount
 example.near,lockup-example.venear.dao,1134994235059497700000000
 ```
 
-Gauntlet will then upload this file using the near-claims-processor UI at location https://near-claim.vercel.app/campaigns/new
+Gauntlet will then upload this file using the [New Campaign Page on the Agora Campaign Admin Application](https://near-claim.vercel.app/campaigns/new). 
 
-The merkle tree will be generated and the root will be displayed example:
+The merkle tree will be generated and the root will be displayed in the UI.  
 
-```
-0x0c443eee8b546bae8046a69e4762db5c39198f50fac5f139d0a455fc45a76749
-```
-
-or in the raw format:
+An example root would be: `0x0c443eee8b546bae8046a69e4762db5c39198f50fac5f139d0a455fc45a76749`, and in raw format:
 
 ```
 [
@@ -167,9 +160,9 @@ As well as the entire trie data structure:
 }
 ```
 
-The near-claims-processor will also have a UI for users to retrieve their proof artifacts, by searching based on accountIds.
+The Security Council & Near Foundation will determine a valid claim period from the proposed start date. The recommendation is 30 days from the timestamp of the campaign creation. 
 
-After this sensing proposal has passed. Gauntlet will update the claims contract with a new campaign running the following example command.
+Gauntlet will update the claims contract with a new campaign running the following example command, note the setting in the command related to the claim period.
 
 ```bash
 near contract call-function as-transaction $CLAIMS_CONTRACT create_campaign json-args '{"merkle_root": [
@@ -208,13 +201,14 @@ near contract call-function as-transaction $CLAIMS_CONTRACT create_campaign json
 ], "claim_end": "1789228321000000000"}' prepaid-gas '100.0 Tgas' attached-deposit '0 NEAR' sign-as $GAUNTLET_ACCOUNT_ID network-config mainnet sign-with-keychain send
 ```
 
-A user then can interact with the claims contract and transfer their Rewards to their lockup using this command:
+The [Agora Campaign Admin Application](https://near-claim.vercel.app/) has a UI for users to retrieve their proof artifacts, by searching based on accountIds, on a per-claim basis.
+
+A user then can interact with the claims contract and transfer their rewards to their lockup using this command:
 
 ```bash
 near contract call-function as-transaction $CLAIM_CONTRACT.near claim json-args '{"campaign_id": 1, "merkle_proof": [[..]], "lockup_contract": "lockup-example.near", "amount": "10000" }' prepaid-gas '100.0 Tgas' attached-deposit '0 NEAR' sign-as $YOUR_ACCOUNT.near network-config mainnet sign-with-keychain send
 ```
 
-The SC/NF should determine a valid claim period from the proposed start date. The recommendation is 30 days from the timestamp of the campaign creation. 
 
 ## Verification Steps
 
