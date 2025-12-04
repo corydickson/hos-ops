@@ -11,6 +11,7 @@ Once this proposal has passed Gauntlet will have the ability to publish new camp
 ## Proposal Details
 
 Contract repo: https://github.com/voteagora/near-merkle-claim
+
 Claims UI Repo: https://github.com/voteagora/near-claim
 
 Rebuilding contracts
@@ -27,6 +28,9 @@ Retrieve the contract binary at `target/near/near_merkle_claim.wasm`
 export CONTRACT_HASH=$(cat target/near/near_merkle_claim.wasm | sha256sum | awk '{ print $1 }' | xxd -r -p | base58)
 echo $CONTRACT_HASH
 # Expected: FMgQ6iPcerbU6whoDpYrj9LbMRBEnPV3brvgmHWCMqMA
+ls -l target/near/near_merkle_claim.wasm
+# Size: 159744
+```
 
 Deploying contract to account created by the NF with keys revoked i.e. $CLAIMS_ACCOUNT_ID:
 
@@ -34,7 +38,8 @@ Deploying contract to account created by the NF with keys revoked i.e. $CLAIMS_A
 export CLAIMS_ACCOUNT_ID=[TBD]
 export GAUNTLET_ACCOUNT_ID=[TBD]
 export STORAGE_DEPOSIT="1 NEAR"
-# 0.1 NEAR (enough for 10000 bytes)
+
+#0.1 NEAR (enough for 10000 bytes)
 export MIN_STORAGE_DEPOSIT="100000000000000000000000"
 
 near contract deploy $CLAIMS_ACCOUNT_ID use-file $TARGET with-init-call new json-args '{
@@ -51,7 +56,7 @@ Once the contract is deployed Gauntlet will be able to create a campaign. Below 
 
 $GAUNTLET_ACCOUNT_ID - Gauntlet account ID who is the owner of the claims contract.
 
-Both users and memebers of the security council should use the Agora Merkle Tree (software)[https://near-claim.vercel.app/] to generate a proof with the 
+Both users and memebers of the security council should use the Agora Merkle Tree [software](https://near-claim.vercel.app/) to generate a proof with the 
 trie artifacts provided by Gauntlet. The parameters you see below are just an example and should be populated with real data (TBD).
 
 How to verify:
@@ -67,7 +72,6 @@ Ex.
 ```
 address,lockup,amount
 example.near,lockup-example.venear.dao,1134994235059497700000000
-...
 ```
 
 Gauntlet will then upload this file using the near-claims-processor UI at location https://near-claim.vercel.app/campaigns/new
@@ -167,8 +171,7 @@ The near-claims-processor will also have a UI for users to retrieve their proof 
 
 After this sensing proposal has passed. Gauntlet will update the claims contract with a new campaign running the following example command.
 
-bash
-```
+```bash
 near contract call-function as-transaction $CLAIMS_CONTRACT create_campaign json-args '{"merkle_root": [
     158,
     236,
