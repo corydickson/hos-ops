@@ -10,7 +10,7 @@ Once this proposal has passed Gauntlet will have the ability to publish new camp
 
 ## Proposal Details
 
-Two new architecture components are introduce:
+Two new architecture components are introduced:
 
 - The [NEAR Merkle Claim Smart Contract](https://github.com/voteagora/near-merkle-claim)
 
