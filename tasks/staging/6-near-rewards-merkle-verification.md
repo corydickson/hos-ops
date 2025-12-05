@@ -62,7 +62,7 @@ near contract deploy $CLAIMS_ACCOUNT_ID use-file $TARGET with-init-call new json
 
 Once the contract is deployed Gauntlet will be able to create a campaign using a data pipeline and the [Agora Campaign Admin Application](https://near-claim.vercel.app/).
 
-The data format they use will be a three column, comma seperated file, with fields: `address,lockup,amount`
+The data format they use will be a three column, comma separated file, with fields: `address,lockup,amount`
 
 Ex.
 
